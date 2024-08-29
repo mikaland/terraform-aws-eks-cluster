@@ -6,15 +6,15 @@ resource "aws_eks_node_group" "eks_ng_private" {
   node_group_name = "${var.name}-eks-ng-private"
   node_role_arn   = aws_iam_role.eks_nodegroup_role.arn
   subnet_ids      = var.private_subnets
-  #version = var.cluster_version #(Optional: Defaults to EKS Cluster Kubernetes version)    
+  version         = var.cluster_version #(Optional: Defaults to EKS Cluster Kubernetes version)    
 
   ami_type       = "AL2_x86_64"
   capacity_type  = "ON_DEMAND"
   disk_size      = 20
-  instance_types = ["t3.large"]
+  instance_types = var.cluster_node_group_instance_types
 
   remote_access {
-    ec2_ssh_key = "eks-terraform-key"
+    ec2_ssh_key               = "eks-terraform-key"
     source_security_group_ids = [aws_security_group.eks_nodes_sg.id]
   }
 
@@ -43,6 +43,6 @@ resource "aws_eks_node_group" "eks_ng_private" {
     Name = "Private-Node-Group"
     # Cluster Autoscaler Tags
     "k8s.io/cluster-autoscaler/${var.cluster_name}" = "owned"
-    "k8s.io/cluster-autoscaler/enabled"                   = "TRUE"
+    "k8s.io/cluster-autoscaler/enabled"             = "TRUE"
   }
 }

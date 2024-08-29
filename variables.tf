@@ -43,7 +43,7 @@ variable "cluster_service_ipv4_cidr" {
 variable "cluster_version" {
   description = "Kubernetes minor version to use for the EKS cluster (for example 1.21)"
   type        = string
-  default     = null
+  default     = 1.29
 }
 variable "cluster_endpoint_private_access" {
   description = "Indicates whether or not the Amazon EKS private API server endpoint is enabled."
@@ -63,6 +63,11 @@ variable "cluster_endpoint_public_access_cidrs" {
   default     = ["0.0.0.0/0"]
 }
 
+variable "cluster_node_group_instance_types" {
+  type    = list(string)
+  default = ["t3.medium, t3.large"]
+}
+
 ##########################################
 # VPC
 ##########################################
@@ -71,15 +76,15 @@ variable "name" {
 }
 
 variable "public_subnets" {
-  type    = list(string)
+  type = list(string)
   # default = ["10.0.101.0/24", "10.0.102.0/24"]
 }
 
 variable "private_subnets" {
-  type    = list(string)
+  type = list(string)
   # default = ["10.0.1.0/24", "10.0.2.0/24"]
 }
 
 variable "vpc_id" {
-  type = string 
+  type = string
 }
